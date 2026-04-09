@@ -24,7 +24,7 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onJoin(PlayerJoinEvent e) {
         Player player = e.getPlayer();
-        S.async(() -> decentHolograms.getHologramManager().updateVisibility(player));
+        S.entity(player, () -> decentHolograms.getHologramManager().updateVisibility(player));
         if (decentHolograms.isUpdateAvailable() && player.hasPermission("dh.admin")) {
             Lang.sendUpdateMessage(player);
         }
@@ -33,7 +33,7 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
         Player player = e.getPlayer();
-        S.async(() -> decentHolograms.getHologramManager().onQuit(player));
+        S.entity(player, () -> decentHolograms.getHologramManager().onQuit(player));
     }
 
     // TODO: All holograms (and entities) get hidden on the client, when the client
@@ -49,14 +49,14 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onRespawn(PlayerRespawnEvent e) {
         if (Settings.UPDATE_VISIBILITY_ON_TELEPORT) {
-            S.async(() -> decentHolograms.getHologramManager().hideAll(e.getPlayer()));
+            S.entity(e.getPlayer(), () -> decentHolograms.getHologramManager().hideAll(e.getPlayer()));
         }
     }
 
     @EventHandler
     public void onTeleport(PlayerTeleportEvent e) {
         if (Settings.UPDATE_VISIBILITY_ON_TELEPORT) {
-            S.async(() -> decentHolograms.getHologramManager().hideAll(e.getPlayer()));
+            S.entity(e.getPlayer(), () -> decentHolograms.getHologramManager().hideAll(e.getPlayer()));
         }
     }
 

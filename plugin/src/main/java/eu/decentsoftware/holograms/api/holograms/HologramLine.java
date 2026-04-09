@@ -12,6 +12,7 @@ import eu.decentsoftware.holograms.api.utils.Log;
 import eu.decentsoftware.holograms.api.utils.PAPI;
 import eu.decentsoftware.holograms.api.utils.entity.HologramEntity;
 import eu.decentsoftware.holograms.api.utils.items.HologramItem;
+import eu.decentsoftware.holograms.api.utils.scheduler.S;
 import eu.decentsoftware.holograms.nms.api.NmsHologramPartData;
 import eu.decentsoftware.holograms.nms.api.renderer.NmsEntityHologramRenderer;
 import eu.decentsoftware.holograms.nms.api.renderer.NmsHeadHologramRenderer;
@@ -433,6 +434,10 @@ public class HologramLine extends HologramObject {
      * @param players Given players.
      */
     public void show(Player... players) {
+        if ((players == null || players.length == 0) && S.isFolia()) {
+            getPlayers(false).forEach(player -> S.entity(player, () -> show(player)));
+            return;
+        }
         synchronized (renderMutex) {
             if (isDisabled()) {
                 return;
@@ -583,6 +588,10 @@ public class HologramLine extends HologramObject {
      * @param players Given players.
      */
     public void hide(Player... players) {
+        if ((players == null || players.length == 0) && S.isFolia()) {
+            getPlayers(true).forEach(player -> S.entity(player, () -> hide(player)));
+            return;
+        }
         synchronized (renderMutex) {
             hidePreviousIfNecessary();
             List<Player> playerList = getPlayers(true, players);
