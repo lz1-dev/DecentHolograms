@@ -27,7 +27,7 @@ public class WorldListener implements Listener {
     public void onWorldUnload(WorldUnloadEvent event) {
         World world = event.getWorld();
 
-        S.async(() -> hologramManager.getHolograms().stream()
+        S.sync(() -> hologramManager.getHolograms().stream()
                 .filter(Hologram::isEnabled)
                 .filter(hologram -> hologram.getLocation().getWorld().equals(world))
                 .forEach(hologram -> hologram.disable(DisableCause.WORLD_UNLOAD)));
@@ -37,7 +37,7 @@ public class WorldListener implements Listener {
     public void onWorldLoad(WorldLoadEvent event) {
         World world = event.getWorld();
 
-        S.async(() -> {
+        S.sync(() -> {
             Set<String> hologramsToLoad = getHologramsToLoadByWorld(world);
             if (!hologramsToLoad.isEmpty()) {
                 hologramsToLoad.forEach(fileName -> {
