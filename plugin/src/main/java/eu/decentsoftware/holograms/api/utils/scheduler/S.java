@@ -47,14 +47,14 @@ public class S {
 
     public static TaskHandle sync(Runnable runnable, long delay) {
         if (FOLIA) {
-            return invokeConsumerTask(GLOBAL_REGION_SCHEDULER, "runDelayed", PLUGIN, runnable, delay);
+            return invokeConsumerTask(GLOBAL_REGION_SCHEDULER, "runDelayed", PLUGIN, runnable, normalizeFoliaTickDelay(delay));
         }
         return new BukkitTaskHandle(Bukkit.getScheduler().runTaskLater(PLUGIN, runnable, delay));
     }
 
     public static TaskHandle syncTask(Runnable runnable, long interval) {
         if (FOLIA) {
-            return invokeConsumerTask(GLOBAL_REGION_SCHEDULER, "runAtFixedRate", PLUGIN, runnable, 0L, interval);
+            return invokeConsumerTask(GLOBAL_REGION_SCHEDULER, "runAtFixedRate", PLUGIN, runnable, 1L, normalizeFoliaTickPeriod(interval));
         }
         return new BukkitTaskHandle(Bukkit.getScheduler().runTaskTimer(PLUGIN, runnable, 0L, interval));
     }
@@ -120,7 +120,7 @@ public class S {
 
     public static TaskHandle region(Location location, Runnable runnable, long delay) {
         if (FOLIA) {
-            return invokeConsumerTask(REGION_SCHEDULER, "runDelayed", PLUGIN, location, runnable, delay);
+            return invokeConsumerTask(REGION_SCHEDULER, "runDelayed", PLUGIN, location, runnable, normalizeFoliaTickDelay(delay));
         }
         return new BukkitTaskHandle(Bukkit.getScheduler().runTaskLater(PLUGIN, runnable, delay));
     }
@@ -209,6 +209,14 @@ public class S {
 
     private static long ticksToMillis(long ticks) {
         return Math.max(0L, ticks) * 50L;
+    }
+
+    private static long normalizeFoliaTickDelay(long delay) {
+        return Math.max(1L, delay);
+    }
+
+    private static long normalizeFoliaTickPeriod(long period) {
+        return Math.max(1L, period);
     }
 
     private static final class BukkitTaskHandle implements TaskHandle {
