@@ -680,7 +680,7 @@ public class Hologram extends UpdatingHologramObject implements ITicked {
                 } else {
                     // We need to run the task later on older versions as, if we don't, it causes issues with some holograms *randomly* becoming invisible.
                     // I *think* this is from despawning and spawning the entities (with the same ID) in the same tick.
-                    S.sync(() -> showPageTo(player, page, pageIndex), 0L);
+                    S.entity(player, () -> showPageTo(player, page, pageIndex), 1L);
                 }
                 return true;
             }
@@ -699,7 +699,7 @@ public class Hologram extends UpdatingHologramObject implements ITicked {
     public void showAll() {
         synchronized (visibilityMutex) {
             if (isEnabled()) {
-                Bukkit.getOnlinePlayers().forEach(player -> show(player, getPlayerPage(player)));
+                Bukkit.getOnlinePlayers().forEach(player -> S.entity(player, () -> show(player, getPlayerPage(player))));
             }
         }
     }
@@ -729,7 +729,7 @@ public class Hologram extends UpdatingHologramObject implements ITicked {
     public void updateAll(boolean force) {
         synchronized (visibilityMutex) {
             if (isEnabled() && !hasFlag(EnumFlag.DISABLE_UPDATING)) {
-                getViewerPlayers().forEach(player -> performUpdate(force, player));
+                getViewerPlayers().forEach(player -> S.entity(player, () -> performUpdate(force, player)));
             }
         }
     }
@@ -758,7 +758,7 @@ public class Hologram extends UpdatingHologramObject implements ITicked {
     public void updateAnimationsAll() {
         synchronized (visibilityMutex) {
             if (isEnabled() && !hasFlag(EnumFlag.DISABLE_ANIMATIONS)) {
-                getViewerPlayers().forEach(this::performUpdateAnimations);
+                getViewerPlayers().forEach(player -> S.entity(player, () -> performUpdateAnimations(player)));
             }
         }
     }
@@ -794,7 +794,7 @@ public class Hologram extends UpdatingHologramObject implements ITicked {
     public void hideAll() {
         synchronized (visibilityMutex) {
             if (isEnabled()) {
-                getViewerPlayers().forEach(this::hide);
+                getViewerPlayers().forEach(player -> S.entity(player, () -> hide(player)));
             }
         }
     }
@@ -818,7 +818,7 @@ public class Hologram extends UpdatingHologramObject implements ITicked {
 
     public void showClickableEntitiesAll() {
         if (isEnabled()) {
-            getViewerPlayers().forEach(this::showClickableEntities);
+            getViewerPlayers().forEach(player -> S.entity(player, () -> showClickableEntities(player)));
         }
     }
 
@@ -834,7 +834,7 @@ public class Hologram extends UpdatingHologramObject implements ITicked {
 
     public void hideClickableEntitiesAll() {
         if (isEnabled()) {
-            getViewerPlayers().forEach(this::hideClickableEntities);
+            getViewerPlayers().forEach(player -> S.entity(player, () -> hideClickableEntities(player)));
         }
     }
 
@@ -857,7 +857,7 @@ public class Hologram extends UpdatingHologramObject implements ITicked {
 
     public void teleportClickableEntitiesAll() {
         if (isEnabled()) {
-            getViewerPlayers().forEach(this::teleportClickableEntities);
+            getViewerPlayers().forEach(player -> S.entity(player, () -> teleportClickableEntities(player)));
         }
     }
 
