@@ -102,17 +102,29 @@ public final class DecentHolograms {
         if (this.displayModule != null) {
             this.displayModule.shutdown();
         }
-        this.nmsPacketListenerService.shutdown();
-        this.featureManager.destroy();
-        this.hologramManager.destroy();
-        this.animationManager.destroy();
-        this.ticker.destroy();
+        if (this.nmsPacketListenerService != null) {
+            this.nmsPacketListenerService.shutdown();
+        }
+        if (this.featureManager != null) {
+            this.featureManager.destroy();
+        }
+        if (this.hologramManager != null) {
+            this.hologramManager.destroy();
+        }
+        if (this.animationManager != null) {
+            this.animationManager.destroy();
+        }
+        if (this.ticker != null) {
+            this.ticker.destroy();
+        }
 
         for (Hologram hologram : Hologram.getCachedHolograms()) {
             hologram.destroy();
         }
 
-        this.integrationAvailabilityService.shutdown();
+        if (this.integrationAvailabilityService != null) {
+            this.integrationAvailabilityService.shutdown();
+        }
         BungeeUtils.destroy();
     }
 
