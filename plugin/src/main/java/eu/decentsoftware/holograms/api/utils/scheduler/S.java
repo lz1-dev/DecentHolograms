@@ -247,7 +247,9 @@ public class S {
                 return;
             }
             try {
-                task.getClass().getMethod("cancel").invoke(task);
+                Method method = task.getClass().getMethod("cancel");
+                method.setAccessible(true);
+                method.invoke(task);
             } catch (Exception e) {
                 throw new FoliaDetectionException("Failed to cancel Folia scheduled task.", e);
             }
