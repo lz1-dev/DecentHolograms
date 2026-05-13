@@ -29,7 +29,7 @@ import org.jetbrains.annotations.NotNull;
 public class BillboardAttributeDefinition implements AttributeDefinition<DisplayBillboardConstraints> {
 
     public static final AttributeKey<DisplayBillboardConstraints> KEY = AttributeKey.of("billboard", DisplayBillboardConstraints.class);
-    private static final BillboardConstraintsValue DEFAULT_VALUE = new BillboardConstraintsValue(DisplayBillboardConstraints.FIXED);
+    private static final BillboardConstraintsValue DEFAULT_VALUE = new BillboardConstraintsValue(DisplayBillboardConstraints.CENTER);
 
     @Override
     public @NotNull AttributeKey<DisplayBillboardConstraints> getKey() {
