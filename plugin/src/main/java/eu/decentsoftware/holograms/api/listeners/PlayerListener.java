@@ -24,7 +24,7 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onJoin(PlayerJoinEvent e) {
         Player player = e.getPlayer();
-        S.entity(player, () -> decentHolograms.getHologramManager().updateVisibility(player), S.isFolia() ? 20L : 0L);
+        S.entity(player, () -> decentHolograms.getHologramManager().updateVisibility(player), 20L);
         if (decentHolograms.isUpdateAvailable() && player.hasPermission("dh.admin")) {
             Lang.sendUpdateMessage(player);
         }
