@@ -80,6 +80,7 @@ public class DisplayService {
     public void saveDisplay(DisplayBase display) {
         registerDisplay(display);
         persistenceService.saveDisplay(display);
+        renderCoordinator.updateVisibility(display);
     }
 
     public boolean deleteDisplay(String name) {

@@ -88,7 +88,7 @@ public abstract class LegacyTextFormattingParser<C, F> extends TextFormattingPar
         return newLineComponent;
     }
 
-    private C cachedParseNotNull(String text) {
+    private synchronized C cachedParseNotNull(String text) {
         C component = cache.get(text);
         if (component != null) {
             return component;
