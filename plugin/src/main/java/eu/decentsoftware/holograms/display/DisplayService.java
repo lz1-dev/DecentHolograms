@@ -80,6 +80,7 @@ public class DisplayService {
     public void saveDisplay(DisplayBase display) {
         registerDisplay(display);
         persistenceService.saveDisplay(display);
+        renderCoordinator.updateVisibility(display);
     }
 
     public boolean deleteDisplay(String name) {
@@ -104,6 +105,12 @@ public class DisplayService {
     public void hideDisplaysForPlayer(PlatformPlayer player) {
         for (DisplayBase display : displays.values()) {
             renderCoordinator.hideDisplayForPlayer(display, player);
+        }
+    }
+
+    public void updateVisibilityForPlayer(PlatformPlayer player) {
+        for (DisplayBase display : displays.values()) {
+            renderCoordinator.updateVisibility(display, player);
         }
     }
 
